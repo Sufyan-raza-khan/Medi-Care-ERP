@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#b5121b">
+  <title>Medi-Care | Medical Store ERP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Login screen: demo-only client-side authentication. -->
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="brand-mark large">M</div>
+      <div class="eyebrow">MEDICAL STORE MANAGEMENT</div>
+      <h1 class="login-title">Medi-Care</h1>
+      <p class="muted mb-4">Sign in to your store workspace</p>
+      <form id="loginForm">
+        <label class="form-label" for="loginUsername">Username</label>
+        <input class="form-control mb-3" id="loginUsername" autocomplete="username" value="admin" required>
+        <label class="form-label" for="loginPassword">Password</label>
+        <input class="form-control mb-3" id="loginPassword" type="password" autocomplete="current-password" value="MediCare@2026!" required>
+        <div id="loginError" class="form-error" role="alert"></div>
+        <button class="btn btn-red w-100 mt-2" type="submit">Sign in <span aria-hidden="true">→</span></button>
+      </form>
+    </div>
+  </section>
+
+  <div id="appShell" class="app-shell d-none">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-mark">M</div>
+        <div><div class="brand-name">Medi-Care</div><div class="brand-sub">STORE ERP</div></div>
+      </div>
+      <div class="nav-caption">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-page="dashboard"><span class="nav-icon">▦</span> Dashboard</button>
+        <button class="nav-link" data-page="inventory"><span class="nav-icon">▤</span> Inventory <span id="navLowStock" class="nav-count">0</span></button>
+        <button class="nav-link" data-page="purchases"><span class="nav-icon">⇩</span> Purchase orders</button>
+        <button class="nav-link" data-page="pos"><span class="nav-icon">▣</span> Billing / POS</button>
+        <button class="nav-link" data-page="reports"><span class="nav-icon">▥</span> Reports</button>
+        <div class="nav-caption nav-caption-spaced">MANAGEMENT</div>
+        <button class="nav-link" data-page="attendance"><span class="nav-icon">◷</span> Attendance</button>
+        <button class="nav-link" data-page="users"><span class="nav-icon">♙</span> Staff & users</button>
+        <button class="nav-link" data-page="activity"><span class="nav-icon">☷</span> Activity log</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><div class="help-icon">＋</div><strong>Need assistance?</strong><p>Refer to README.txt for setup and usage instructions.</p></div>
+        <div class="sidebar-version">MEDI-CARE · DEMO EDITION</div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button id="mobileMenu" class="mobile-menu" aria-label="Toggle menu">☰</button>
+        <div><div class="topbar-kicker">MEDICAL STORE OPERATIONS</div><div id="pageHeading" class="topbar-heading">Dashboard</div></div>
+        <div class="topbar-actions">
+          <div class="today-chip"><span class="live-dot"></span><span id="currentDate"></span></div>
+          <div class="user-menu"><div class="avatar" id="topAvatar">A</div><div class="user-meta"><strong id="topUserName">Administrator</strong><span id="topUserRole">Admin</span></div></div>
+          <button class="btn btn-outline-red btn-sm" data-action="logout">Sign out</button>
+        </div>
+      </header>
+
+      <div class="content-wrap">
+        <!-- DASHBOARD -->
+        <section class="page-section" id="page-dashboard">
+          <div class="page-intro"><div><div class="eyebrow">OVERVIEW</div><h1>Good day, <span id="welcomeName">Admin</span></h1><p>Here is what's happening at your medical store today.</p></div><button class="btn btn-red" data-page="pos">＋ New sale</button></div>
+          <div class="metric-grid">
+            <article class="metric-card"><div class="metric-top"><span>Today's sales</span><span class="metric-icon">▣</span></div><div class="metric-value" id="metricTodaySales">Rs. 0</div><div class="metric-foot" id="metricSalesCount">0 transactions today</div></article>
+            <article class="metric-card"><div class="metric-top"><span>Gross revenue</span><span class="metric-icon">↗</span></div><div class="metric-value" id="metricRevenue">Rs. 0</div><div class="metric-foot">All recorded sales</div></article>
+            <article class="metric-card"><div class="metric-top"><span>Estimated net profit</span><span class="metric-icon">◈</span></div><div class="metric-value" id="metricProfit">Rs. 0</div><div class="metric-foot">Sales less item cost; before overhead</div></article>
+            <article class="metric-card"><div class="metric-top"><span>Medicines in stock</span><span class="metric-icon">▤</span></div><div class="metric-value" id="metricProducts">0</div><div class="metric-foot" id="metricStockFoot">Active medicine records</div></article>
+          </div>
+          <div class="dashboard-grid">
+            <article class="panel sales-panel"><div class="panel-heading"><div><h2>Sales overview</h2><p>Recorded revenue for the last 7 days</p></div><span class="panel-tag">7 DAYS</span></div><div id="salesChart" class="bar-chart"></div><div class="chart-legend"><span class="legend-dot"></span> Daily revenue</div></article>
+            <article class="panel alert-panel"><div class="panel-heading"><div><h2>Stock attention</h2><p>Items that need a restock</p></div><button class="text-action" data-page="inventory">View inventory →</button></div><div id="dashboardLowStock" class="alert-list"></div></article>
+          </div>
+          <article class="panel mt-4"><div class="panel-heading"><div><h2>Recent transactions</h2><p>Latest completed checkouts</p></div><button class="text-action" data-page="reports">View reports →</button></div><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Receipt</th><th>Date & time</th><th>Cashier</th><th>Payment</th><th class="text-end">Total</th></tr></thead><tbody id="recentSalesTable"></tbody></table></div></article>
+        </section>
+
+        <!-- INVENTORY -->
+        <section class="page-section d-none" id="page-inventory">
+          <div class="page-intro"><div><div class="eyebrow">STOCK CONTROL</div><h1>Medicine inventory</h1><p>Manage medicine records, quantities, pricing and expiry dates.</p></div><button class="btn btn-red" data-action="add-medicine">＋ Add medicine</button></div>
+          <div class="toolbar"><div class="search-wrap"><span>⌕</span><input id="inventorySearch" class="form-control" placeholder="Search medicine, company or batch..."></div><select id="inventoryFilter" class="form-select filter-select"><option value="all">All stock levels</option><option value="low">Low stock</option><option value="out">Out of stock</option><option value="ok">Healthy stock</option></select><span id="inventoryCount" class="result-count"></span></div>
+          <article class="panel"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Medicine</th><th>Batch / Company</th><th>Expiry</th><th>Cost</th><th>Sale price</th><th>Stock</th><th>Status</th><th class="text-end">Actions</th></tr></thead><tbody id="inventoryTable"></tbody></table></div></article>
+          <div class="info-note">Expiry dates and stock levels are entered manually in this demo. Review expiry dates regularly before dispensing medicines.</div>
+        </section>
+
+        <!-- PURCHASES -->
+        <section class="page-section d-none" id="page-purchases">
+          <div class="page-intro"><div><div class="eyebrow">SUPPLY CHAIN</div><h1>Purchase orders</h1><p>Track supplier shipments and update stock when goods arrive.</p></div><button class="btn btn-red" data-action="add-purchase">＋ Create purchase order</button></div>
+          <div class="metric-grid compact-metrics"><article class="metric-card"><div class="metric-top"><span>Open orders</span><span class="metric-icon">⇩</span></div><div class="metric-value" id="poOpenCount">0</div></article><article class="metric-card"><div class="metric-top"><span>In transit</span><span class="metric-icon">↗</span></div><div class="metric-value" id="poTransitCount">0</div></article><article class="metric-card"><div class="metric-top"><span>Received</span><span class="metric-icon">✓</span></div><div class="metric-value" id="poReceivedCount">0</div></article><article class="metric-card"><div class="metric-top"><span>Pending value</span><span class="metric-icon">₨</span></div><div class="metric-value" id="poPendingValue">Rs. 0</div></article></div>
+          <article class="panel"><div class="panel-heading"><div><h2>Shipment register</h2><p>Purchase orders from medicine suppliers</p></div><select id="poFilter" class="form-select filter-select"><option value="all">All statuses</option><option>Ordered</option><option>In transit</option><option>Received</option><option>Cancelled</option></select></div><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Order ID</th><th>Supplier</th><th>Items</th><th>Order date</th><th>Expected delivery</th><th>Value</th><th>Status</th><th>Action</th></tr></thead><tbody id="purchaseTable"></tbody></table></div></article>
+        </section>
+
+        <!-- POS -->
+        <section class="page-section d-none" id="page-pos">
+          <div class="page-intro"><div><div class="eyebrow">POINT OF SALE</div><h1>Billing & checkout</h1><p>Build a basket, select a payment method and print a receipt.</p></div><span class="pos-counter">REGISTER <strong>01</strong></span></div>
+          <div class="pos-layout"><article class="panel product-picker"><div class="panel-heading"><div><h2>Available medicines</h2><p>Select products to add to the bill</p></div></div><div class="search-wrap pos-search"><span>⌕</span><input id="posSearch" class="form-control" placeholder="Search medicine..."></div><div id="posProducts" class="pos-products"></div></article>
+            <article class="panel cart-panel"><div class="panel-heading"><div><h2>Current bill</h2><p id="cartItemCount">0 items in basket</p></div><button class="text-action" data-action="clear-cart">Clear all</button></div><div id="cartItems" class="cart-items"><div class="empty-state">Your basket is empty.<br><span>Select a medicine to begin.</span></div></div><div class="cart-summary"><div><span>Subtotal</span><strong id="cartSubtotal">Rs. 0</strong></div><div><span>Tax (5%)</span><strong id="cartTax">Rs. 0</strong></div><div class="grand-total"><span>Total payable</span><strong id="cartTotal">Rs. 0</strong></div><label class="form-label mt-3" for="paymentMethod">Payment method</label><select id="paymentMethod" class="form-select"><option>Cash</option><option>Card</option><option>Online</option></select><button class="btn btn-red w-100 mt-3" id="checkoutBtn" data-action="checkout" disabled>Complete checkout →</button><p class="tiny muted mt-2 mb-0">Payment is recorded locally; no payment gateway is connected.</p></div></article>
+          </div>
+        </section>
+
+        <!-- REPORTS -->
+        <section class="page-section d-none" id="page-reports">
+          <div class="page-intro"><div><div class="eyebrow">BUSINESS INTELLIGENCE</div><h1>Sales & financial reports</h1><p>Review transactions, sales totals and estimated product margins.</p></div><button class="btn btn-outline-red" data-action="export-sales">↓ Export CSV</button></div>
+          <div class="metric-grid"><article class="metric-card"><div class="metric-top"><span>Total sales</span><span class="metric-icon">▣</span></div><div class="metric-value" id="reportRevenue">Rs. 0</div></article><article class="metric-card"><div class="metric-top"><span>Cost of goods sold</span><span class="metric-icon">▤</span></div><div class="metric-value" id="reportCogs">Rs. 0</div></article><article class="metric-card"><div class="metric-top"><span>Estimated margin</span><span class="metric-icon">◈</span></div><div class="metric-value" id="reportMargin">Rs. 0</div></article><article class="metric-card"><div class="metric-top"><span>Transactions</span><span class="metric-icon">☷</span></div><div class="metric-value" id="reportTransactions">0</div></article></div>
+          <article class="panel"><div class="panel-heading"><div><h2>Transaction history</h2><p>All completed POS checkouts</p></div><input id="reportSearch" class="form-control report-search" placeholder="Search receipt or cashier..."></div><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Receipt</th><th>Timestamp</th><th>Cashier</th><th>Items</th><th>Payment</th><th>Subtotal</th><th>Tax</th><th class="text-end">Total</th><th></th></tr></thead><tbody id="reportSalesTable"></tbody></table></div></article>
+          <div class="info-note">Profit shown here is an estimated gross product margin (subtotal less recorded cost of goods sold). It excludes salaries, rent, utilities, tax liabilities and other operating costs.</div>
+        </section>
+
+        <!-- ATTENDANCE -->
+        <section class="page-section d-none" id="page-attendance">
+          <div class="page-intro"><div><div class="eyebrow">TEAM TIMEKEEPING</div><h1>Attendance records</h1><p>Review staff login/logout sessions and daily working hours.</p></div><div class="attendance-live"><span class="live-dot"></span> Current session <strong id="sessionDuration">--</strong></div></div>
+          <div class="metric-grid compact-metrics"><article class="metric-card"><div class="metric-top"><span>Sessions today</span><span class="metric-icon">◷</span></div><div class="metric-value" id="attendanceSessions">0</div></article><article class="metric-card"><div class="metric-top"><span>Hours recorded today</span><span class="metric-icon">⌚</span></div><div class="metric-value" id="attendanceHours">0h</div></article><article class="metric-card"><div class="metric-top"><span>Staff members</span><span class="metric-icon">♙</span></div><div class="metric-value" id="attendanceStaff">0</div></article><article class="metric-card"><div class="metric-top"><span>Active sessions</span><span class="metric-icon">●</span></div><div class="metric-value" id="attendanceActive">0</div></article></div>
+          <article class="panel"><div class="panel-heading"><div><h2>Daily attendance log</h2><p>Login and logout history by employee</p></div><input id="attendanceDate" type="date" class="form-control date-filter"></div><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Employee</th><th>Role</th><th>Login time</th><th>Logout time</th><th>Working hours</th><th>Status</th></tr></thead><tbody id="attendanceTable"></tbody></table></div></article>
+        </section>
+
+        <!-- USERS -->
+        <section class="page-section d-none" id="page-users">
+          <div class="page-intro"><div><div class="eyebrow">ACCESS MANAGEMENT</div><h1>Staff & users</h1><p>Manage demo workspace accounts and assigned roles.</p></div><button class="btn btn-red" data-action="add-user">＋ Add staff member</button></div>
+          <article class="panel"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Employee</th><th>Username</th><th>Role</th><th>Account status</th><th>Joined</th><th class="text-end">Action</th></tr></thead><tbody id="usersTable"></tbody></table></div></article>
+          <div class="info-note">This static demo uses browser-side accounts and is not suitable for real access control. Production authentication must be enforced by a secured server.</div>
+        </section>
+
+        <!-- ACTIVITY -->
+        <section class="page-section d-none" id="page-activity">
+          <div class="page-intro"><div><div class="eyebrow">SYSTEM TRACEABILITY</div><h1>Activity log</h1><p>Recent user actions recorded in this browser.</p></div><button class="btn btn-outline-red" data-action="export-activity">↓ Export CSV</button></div>
+          <article class="panel"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Date & time</th><th>User</th><th>Activity</th><th>Details</th></tr></thead><tbody id="activityTable"></tbody></table></div></article>
+        </section>
+      </div>
+      <footer class="app-footer"><span>© <span id="footerYear"></span> Medi-Care Medical Store ERP</span><span>Red + White Edition <span class="footer-dot">●</span></span></footer>
+    </main>
+  </div>
+
+  <!-- Reusable dialog -->
+  <dialog id="appDialog" class="app-dialog"><div class="dialog-head"><div><div class="eyebrow" id="dialogEyebrow">MEDI-CARE</div><h2 id="dialogTitle">Form</h2></div><button class="dialog-close" data-action="close-dialog" aria-label="Close">×</button></div><div id="dialogBody"></div></dialog>
+  <div id="toastHost" class="toast-host" aria-live="polite" aria-atomic="true"></div>
+  <div id="receiptPrintArea" class="receipt-print-area"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
